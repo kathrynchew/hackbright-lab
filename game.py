@@ -6,7 +6,6 @@ high_scores = []
 num_plays = 0
 
 print "Greetings! Welcome to the Guessing Game! Huzzah!"
-correct_num = random.randint(1, 5)
 
 
 name = raw_input("What is your name? > ").title()
@@ -18,9 +17,10 @@ def guessing_game():
     global high_scores
     num_plays += 1
     guess_count = 1
+    correct_num = random.randint(1, 100)
 
-    while guess_count < 6:
-        print "\nPlease guess a number between 1 and 100. Use digits only. \nYou only get 5 guesses! \nYou are on guess number {}\n".format(guess_count - 1)
+    while guess_count < 10:
+        print "\nPlease guess a number between 1 and 100. Use digits only. \nYou only get 10 guesses! \nYou are on guess number {}\n".format(guess_count - 1)
 
         number_guess = raw_input("> ")
 
@@ -71,7 +71,7 @@ def print_scores(high_scores):
     place_count = 1
     print "\nThe current top 3 scores are:"
     for item in high_scores:
-        print str(place_count) + ". " + str(item[0]) + ": " + str(item[1])
+        print str(place_count) + ". " + str(item[0]) + ": " + str(item[1]) + " guesses"
         place_count += 1
 
 
