@@ -1,23 +1,26 @@
 """A number-guessing game."""
 import random
 
-high_scores = {}
+all_scores = {}
+high_scores = []
 num_plays = 0
 
 print "Greetings! Welcome to the Guessing Game! Huzzah!"
 correct_num = random.randint(1, 5)
 
 
-name = raw_input("What is your name?").title()
+name = raw_input("What is your name? > ").title()
 
 
-def guessing_game(high_scores):
+def guessing_game():
     global num_plays
+    global all_scores
+    global high_scores
     num_plays += 1
     guess_count = 1
-    print "Hello, {}!".format(name)
+
     while guess_count < 6:
-        print "Please guess a number between 1 and 100. Use digits only. You only get 5 guesses! You are on guess number {}".format(guess_count - 1)
+        print "\nPlease guess a number between 1 and 100. Use digits only. \nYou only get 5 guesses! \nYou are on guess number {}\n".format(guess_count - 1)
 
         number_guess = raw_input("> ")
 
@@ -26,30 +29,54 @@ def guessing_game(high_scores):
 
             if 0 < number_guess < 101:
                 if number_guess == correct_num:
-                    print "Congratulations, you won the game! {} is the correct number.\nYou found the secret number in {} tries.".format(correct_num, guess_count)
-                    high_scores[name + " " + str(num_plays)] = guess_count
-                    print num_plays
+                    print "\nCongratulations, you won the game! {} is the correct number.\nYou found the secret number in {} tries.\n".format(correct_num, guess_count)
+                    all_scores[name + " turn #" + str(num_plays)] = guess_count
+                    generate_high_scores()
+                    # print high_scores
                     break
                 elif number_guess > correct_num:
-                    print "Sorry, that guess is too high! Try a lower number."
+                    print "\nSorry, that guess is too high! Try a lower number."
                 else:
-                    print "Sorry, that guess is too low! Try a higher number."
+                    print "\nSorry, that guess is too low! Try a higher number."
             else:
-                print "What are you thinking! I said between 1-100!!!!! Try again, jeez!"
+                print "\nWhat are you thinking! I said between 1-100!!!!! Try again, jeez!"
         except:
             print "I said digits, bozo! Don't you know how to count? Try again!"
         guess_count += 1
 
     if number_guess != correct_num:
-        print "Too many tries :("
+        print "\nToo many tries :("
 
 
-def print_dict(high_scores):
-    for key in high_scores:
-        print key + ": " + str(high_scores[key])
+def generate_high_scores():
+    """Takes dictionary with all scores, sorts by value, tracks top 3 scores"""
+    global high_scores
+    global all_scores
+    counter = 0
+    check_current_score = []
+    for key in sorted(all_scores.iterkeys(), key=lambda k: all_scores[k]):
+        if counter < 3:
+            check_current_score.append((key, all_scores[key]))
+            counter += 1
+    if check_current_score != high_scores:
+        print "Congratulations you got a new high score!"
+        # print "check_current_score: "
+        # print check_current_score
+    high_scores = check_current_score
+
+
+def print_scores(high_scores):
+    # for key in all_scores:
+    #     print key + ": " + str(all_scores[key])
+    place_count = 1
+    print "\nThe current top 3 scores are:"
+    for item in high_scores:
+        print str(place_count) + ". " + str(item[0]) + ": " + str(item[1])
+        place_count += 1
 
 
 while True:
+    print "\nHello, {}!".format(name)
     print """What do you want to do?
     A. Play the guessing game!
     B. View High Scores
@@ -57,9 +84,9 @@ while True:
     user_choice = raw_input("> ").upper()
 
     if user_choice == "A":
-        guessing_game(high_scores)
+        guessing_game()
     elif user_choice == "B":
-        print_dict(high_scores)
+        print_scores(high_scores)
     elif user_choice == "C":
         break
     else:
