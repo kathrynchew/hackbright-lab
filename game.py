@@ -12,6 +12,8 @@ name = raw_input("What is your name? > ").title()
 
 
 def guessing_game():
+    """Loops through game & updates high scores"""
+    #Importing vars as global vars so function can modify them, not just use contents
     global num_plays
     global all_scores
     global high_scores
@@ -32,7 +34,6 @@ def guessing_game():
                     print "\nCongratulations, you won the game! {} is the correct number.\nYou found the secret number in {} tries.\n".format(correct_num, guess_count)
                     all_scores[name + " turn #" + str(num_plays)] = guess_count
                     generate_high_scores()
-                    # print high_scores
                     break
                 elif number_guess > correct_num:
                     print "\nSorry, that guess is too high! Try a lower number."
@@ -66,8 +67,7 @@ def generate_high_scores():
 
 
 def print_scores(high_scores):
-    # for key in all_scores:
-    #     print key + ": " + str(all_scores[key])
+    """Print top 3 scores formatted as a list"""
     place_count = 1
     print "\nThe current top 3 scores are:"
     for item in high_scores:
